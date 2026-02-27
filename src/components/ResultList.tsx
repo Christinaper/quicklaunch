@@ -70,7 +70,7 @@ export const ResultList: React.FC<ResultListProps> = ({
           onMouseEnter={() => onSelect(i)}
           onClick={() => onLaunch(app)}
         >
-          <AppIcon name={app.name} size={36} />
+          <AppIcon name={app.name} path={app.path} size={36} />
 
           <div className="result-info">
             <span className="result-name">
