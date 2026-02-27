@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import type { Strings } from "../hooks/useSettings";
 
 interface SearchBarProps {
   value: string;
@@ -6,21 +7,15 @@ interface SearchBarProps {
   loading: boolean;
   resultCount: number;
   mode: "pins" | "search";
+  t: Strings;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  value,
-  onChange,
-  loading,
-  resultCount,
-  mode,
+  value, onChange, loading, resultCount, mode, t,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    // Auto focus when component mounts
-    setTimeout(() => inputRef.current?.focus(), 60);
-  }, []);
+  useEffect(() => { setTimeout(() => inputRef.current?.focus(), 60); }, []);
 
   return (
     <div className="search-bar">
@@ -34,23 +29,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         ref={inputRef}
         type="text"
         className="search-input"
-        placeholder={mode === "pins" ? "输入关键词搜索应用..." : "搜索应用..."}
+        placeholder={mode === "pins" ? t.searchPlaceholder : t.searchingPlaceholder}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        autoComplete="off"
-        autoCorrect="off"
-        spellCheck={false}
+        onChange={e => onChange(e.target.value)}
+        autoComplete="off" autoCorrect="off" spellCheck={false}
       />
 
-      {/* Status indicator */}
       <div className="search-meta">
-        {loading ? (
-          <span className="search-loading">
-            <span className="spinner" />
-          </span>
-        ) : value ? (
-          <span className="search-count">{resultCount} 个结果</span>
-        ) : null}
+        {loading
+          ? <span className="search-loading"><span className="spinner" /></span>
+          : value
+            ? <span className="search-count">{resultCount} 个</span>
+            : null
+        }
       </div>
     </div>
   );
